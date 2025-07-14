@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نظام الحضور</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="الشعار" class="logo" />
+    <h1>نظام تسجيل الحضور</h1>
+    <input type="text" id="name" placeholder="اكتب اسمك" />
+    <button onclick="registerAttendance()">تسجيل الحضور</button>
+    <div id="success-message"></div>
+  </div>
+
+  <script>
+    function speakWelcome(name) {
+      const msg = new SpeechSynthesisUtterance(`مرحبًا يا ${name}، تم تسجيل حضورك بنجاح`);
+      msg.lang = 'ar-SA';
+      window.speechSynthesis.speak(msg);
+    }
+
+    function registerAttendance() {
+      const name = document.getElementById("name").value.trim();
+      if (!name) return alert("يرجى إدخال الاسم");
+
+      const successBox = document.getElementById("success-message");
+      successBox.innerHTML = `✔️ تم تسجيل حضور ${name} بنجاح!`;
+      successBox.style.display = "block";
+
+      speakWelcome(name);
+
+      setTimeout(() => {
+        successBox.style.display = "none";
+      }, 4000);
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log("✅ Service Worker Registered"));
+    }
+  </script>
+</body>
+</html>
